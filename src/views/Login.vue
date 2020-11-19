@@ -1,0 +1,72 @@
+<template>
+  <div>
+    <!--el-form一个表单，两个输入框-->
+    <el-form ref="loginForm" :model="form" :rules="rules"  label-width="80px" class="login-box">
+      <h3 class="login-title">欢迎登陆</h3>
+      <el-form-item label="账号" prop="username">
+        <el-input type="text" placeholder="请输入账号" v-model="form.username"/>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" placeholder="请输入密码" v-model="form.password"/>
+      </el-form-item>
+      <el-form-item>
+        <!--登陆按钮绑定了一个onSubmit事件-->
+        <el-button type="primary" v-on:click="onSubmit('loginForm')">登陆</el-button>
+      </el-form-item>
+    </el-form>
+    <!--提示窗-->
+    <el-dialog
+      title="温馨提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose">
+      <span>请输入账号和密码</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">确定</el-button>
+      </span>
+    </el-dialog>
+  </div>
+</template>
+<script>
+export default {
+  name:"Login",
+  data(){
+    return{
+      form:{
+        username:'',
+        password:''
+      },
+      rules:{
+        username: [
+          {required:true,message:'账号不可为空',trigger:'blur'}
+        ],
+        password: [
+          {required:true,message:'密码不可为空',trigger:'blur'}
+        ]
+      },
+      dialogVisible:false
+
+    }
+  },
+  methods:{
+    onSubmit(formName){
+      /*为表单绑定验证功能*/
+      this.$refs[formName].validate((valid)=>{
+        if(valid){
+          /*如果引用成功了，会去router中push到main，这种方式称为编程式导航*/
+          this.$router.push("/main");
+
+        }else {
+          this.dialogVisible=true;
+          return false;
+
+        }
+      });
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
